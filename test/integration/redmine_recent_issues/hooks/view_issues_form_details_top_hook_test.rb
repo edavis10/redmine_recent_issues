@@ -15,7 +15,10 @@ class RedmineRecentIssues::Hooks::ViewIssuesFormDetailsTopTest < ActionControlle
       @issue2 = Issue.generate_for_project!(@project).reload
       @issue3 = Issue.generate_for_project!(@project).reload
       @issue4 = Issue.generate_for_project!(@project).reload
-      
+
+      @project2 = Project.generate!.reload
+      @other_project_issue1 = Issue.generate_for_project!(@project2).reload
+      User.add_to_project(@user, @project2, Role.generate!(:permissions => [:view_issues, :add_issues, :edit_issues]))
     end
 
     context "on a project" do
@@ -27,36 +30,31 @@ class RedmineRecentIssues::Hooks::ViewIssuesFormDetailsTopTest < ActionControlle
       
       should "show the last reported issues for a project" do
         assert_select ".recent-issues" do
-          assert_select ".issue-#{@issue2.id}"
           assert_select ".issue-#{@issue3.id}"
           assert_select ".issue-#{@issue4.id}"
+          assert_select ".issue-#{@other_project_issue1.id}"
           assert_select ".issue-#{@issue1.id}", :count => 0 # Over limit
+          assert_select ".issue-#{@issue2.id}", :count => 0 # Over limit
         end
         
       end
       
       should "have a watcher link to let the user watch an issue" do
         assert_select ".recent-issues" do
-          assert_select "#watch-#{@issue2.id}"
           assert_select "#watch-#{@issue3.id}"
           assert_select "#watch-#{@issue4.id}"
+          assert_select "#watch-#{@other_project_issue1.id}"
           assert_select "#watch-#{@issue1.id}", :count => 0 # Over limit
+          assert_select "#watch-#{@issue2.id}", :count => 0 # Over limit
         end
       end
       
       should "have a tooltip for each issue" do
-        assert_select ".issue-#{@issue2.id} .tip"
         assert_select ".issue-#{@issue3.id} .tip"
         assert_select ".issue-#{@issue4.id} .tip"
+        assert_select ".issue-#{@other_project_issue1.id} .tip"
       end
       
     end
-
-    context "without a project" do
-      should "show the last reported issues for all projects"
-      should "have a watcher link to let the user watch an issue"
-      should "have a tooltip for each issue"
-    end
-    
   end
 end
