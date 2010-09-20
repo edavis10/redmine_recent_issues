@@ -8,3 +8,5 @@ Redmine::Plugin.register :redmine_recent_issues do
   url 'http://example.com/path/to/plugin'
   author_url 'http://example.com/about'
 end
+
+require 'redmine_recent_issues/hooks/view_issues_form_details_top_hook'
