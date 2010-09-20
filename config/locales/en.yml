@@ -1,3 +1,2 @@
-# English strings go here for Rails i18n
 en:
-  my_label: "My label"
+  text_recent_issue_count: "Number of recent issues to show"

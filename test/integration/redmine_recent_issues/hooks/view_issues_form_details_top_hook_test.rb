@@ -5,6 +5,7 @@ class RedmineRecentIssues::Hooks::ViewIssuesFormDetailsTopTest < ActionControlle
 
   context "#view_issues_form_details_top" do
     setup do
+      Setting.plugin_redmine_recent_issues = {'recent_issue_count' => 3}
       IssueStatus.generate!(:is_default => true)
       @user = User.generate!(:login => 'test', :password => 'test', :password_confirmation => 'test')
       @project = Project.generate!.reload
