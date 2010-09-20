@@ -33,6 +33,7 @@ module IntegrationTestHelper
 
   def visit_issue_page(issue)
     visit '/issues/' + issue.id.to_s
+    assert_response :success
   end
 
   def assert_forbidden

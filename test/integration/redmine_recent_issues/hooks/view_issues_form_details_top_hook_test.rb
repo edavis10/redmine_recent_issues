@@ -56,5 +56,14 @@ class RedmineRecentIssues::Hooks::ViewIssuesFormDetailsTopTest < ActionControlle
       end
       
     end
+
+    should "not be shown on existing issues" do
+      visit_issue_page(@issue1)
+      assert_select '.recent-issues', :count => 0
+
+      click_link "Update"
+      assert_response :success
+      assert_select '.recent-issues', :count => 0
+    end
   end
 end
