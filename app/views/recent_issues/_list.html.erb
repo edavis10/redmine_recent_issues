@@ -6,7 +6,7 @@
   <% issues.each do |issue| %>
     <div class="recent-issue issue-<%= h(issue.id) %>" title="<%= h(truncate(issue.description, :length => 120)) %>">
       <div class="tooltip">
-        <%= link_to_issue(issue) %>
+        <%= link_to_issue(issue, :project => !(project.present? && project == issue.project)) %>
         <span class="tip"><%= render_issue_tooltip(issue) %></span>
       </div>
       
